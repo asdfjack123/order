@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>餐廳</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <!-- 引用靜態資源時要加 th:href="@{/}" 斜線默認static資料夾，後面補上路徑   -->
+    <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+<body>
+<div class="ui container">
+    <br>
+    <h2 class="ui orange header">餐廳列表</h2>
+    <div class="ui success large message" th:if="${!#strings.isEmpty(message)}">
+        <p th:text="${message}">新增成功</p>
+    </div>
+    <a href="./input.html" th:href="@{/res/input}" class="ui teal button">新增</a>
+    <table class="ui celled table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>名稱</th>
+                <th>描述</th>
+                <th>操作</th>
+            </tr>
+
+        </thead>
+        <tbody>
+            <!--
+             iterStat:
+                count:計數,從1開始
+                index:索引,從0開始
+                size:所有的條數
+                even/odd: 判斷偶數/奇數
+                first/last: 判斷第一條/最後一條
+             -->
+            <tr th:each="re,iterStat:${page.content}" th:class="${iterStat.even} ? 'error'">
+                <td th:text="${iterStat.count}">1</td>
+
+                <!--法一-->
+<!--                <td><a href="#" th:text="${book.name}" th:href="@{/books/{id}(id=${book.id})}">書名</a></td>-->
+                <!--法二-->
+                <td><a href="#" th:text="${re.name}" th:href="@{'/res/' + ${re.id}}">名稱</a></td>
+                <td th:text="${re.description}">描述</td>
+                <td>
+                    <a href="#" th:href="@{/res/input/{id}(id=${re.id})}">更新</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="ui mini pagination menu">
+        <a class="item" href="#" th:href="@{/res(page=${page.number}-1)}" th:unless="${page.first}">上一頁</a>
+        <a class="item" href="#" th:href="@{/res(page=${page.number}+1)}" th:unless="${page.last}">下一頁</a>
+    </div>
+</div>
+
+
+<script src=" https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>
+<script src="../static/lib/prism/prism.js" th:src="@{/lib/prism/prism.js}"></script>
+<script src="../static/lib/tocbot/tocbot.min.js" th:src="@{/lib/tocbot/tocbot.min.js}"></script>
+
+</body>
+</html>
