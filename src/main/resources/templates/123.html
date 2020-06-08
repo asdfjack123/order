@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>餐廳</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <!-- 引用靜態資源時要加 th:href="@{/}" 斜線默認static資料夾，後面補上路徑   -->
+    <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+<body>
+
+<div class="ui container">
+<!--form data-->
+    <form class="ui large form" action="#" th:action="@{/res}" th:object="${re}" method="post">
+        <!--書單的id,隱藏欄位,為空時post會新增,原有值時則是更新-->
+        <input type="hidden" th:value="*{id}" name="id">
+        <div class="ui segment">
+            <label for="nameId">名稱</label>
+            <input type="text" name="name" id="nameId" th:field="*{name}">
+            <label for="descriptionId">說明</label>
+            <input type="text" name="description" id="descriptionId" th:field="*{description}">
+        </div>
+
+        <div class="ui segment">
+            <div class="inline fields">
+                <div class="field">
+                    <div class="field">
+                        <div class="ui labeled action input">
+                            <div class="ui type selection dropdown">
+                                <input type="hidden" name="typeId">
+                                <i class="dropdown icon"></i>
+                                <div class="default text">分類</div>
+                                <div class="menu">
+                                    <div class="item" data-value="1">飯</div>
+                                    <div class="item" data-value="1">麵</div>
+                                    <div class="item" data-value="1">飲料</div>
+                                    <div class="item" data-value="1">其他</div>
+                                </div>
+                            </div>
+                            <button id="clear-btn"  class="ui button">clear</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+<!--submit 執行<form>裡的post? -->
+        <button class="ui submit button">提交</button>
+    </form>
+</div>
+
+
+<script src=" https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>
+<script src="../static/lib/prism/prism.js" th:src="@{/lib/prism/prism.js}"></script>
+<script src="../static/lib/tocbot/tocbot.min.js" th:src="@{/lib/tocbot/tocbot.min.js}"></script>
+
+</body>
+</html>
