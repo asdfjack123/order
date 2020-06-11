@@ -16,7 +16,7 @@ public class IndexController {
     ResService resService;
 
     @GetMapping("/")
-    public String index(@PageableDefault(page=0,size = 5,sort = {"id"},direction = Sort.Direction.ASC) Pageable pageable, Model model){
+    public String index(@PageableDefault(page=0,size = 5,sort = {"id"},direction = Sort.Direction.DESC) Pageable pageable, Model model){
         model.addAttribute("page",resService.findAllByPage(pageable));
         return "Res";
     }

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>菜單</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <!-- 引用靜態資源時要加 th:href="@{/}" 斜線默認static資料夾，後面補上路徑   -->
+    <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+<body>
+
+<!--導航-->
+<!--inverted segment是黑色區塊-->
+<nav th:replace="_fragments :: menu(0)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <a href="#" th:href="@{/}" class="m-item item m-mobile-hide" th:classappend="${n==1} ? 'active'"><i class="mini home icon"></i>首頁</a>
+            <a href="#" th:href="@{/res}" class="m-item item m-mobile-hide" th:classappend="${n==2} ? 'active'"><i class="mini utensils icon"></i>餐廳</a>
+            <div class="right m-item m-mobile-hide menu" th:if="${session.user} != null">
+                <div class="ui dropdown item">
+                    <div class="text">
+                        <img class="ui avatar image" src="https://picsum.photos/100/100?image=1005"
+                             th:arc="${session.user}!= null ? @{${session.user.avatar}}">
+                        <span th:text="${session.user}!= null ? ${session.user.nickname}">Jack</span>
+                    </div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <!--                        <a href="#" th:href="@{/admin/blogs}" class="item">管理</a>-->
+                        <!--                        <a href="#" th:href="@{/admin/logout}" class="item">登出</a>-->
+                    </div>
+                </div>
+            </div>
+
+            <th:block th:if="${session.user} == null">
+                <a href="#" th:href="@{/admin/}" class="right m-item item m-mobile-hide"><i
+                        class="mini home icon"></i>登入</a>
+            </th:block>
+        </div>
+    </div>
+    </div>
+    <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+        <i class="sidebar icon"></i>
+    </a>
+</nav>
+
+<div class="ui container">
+    <br>
+    <h2 id="demo"></h2>
+    <br>
+    <h2 class="ui orange header" th:text="${re.name}">XX餐廳</h2>
+    <div class="ui attached segment m-padded-tb-large">
+        <div class="ui labeled button m-margin-tb-tiny">
+            <a href="#" th:href="@{/res/{id}(id=${re.id})}" th:classappend="${activeType==''} ? 'teal'" class="ui basic button">全部</a>
+        </div>
+        <div class="ui labeled button m-margin-tb-tiny">
+            <a href="#" th:href="@{/res/{id}(id=${re.id} , type='飯')}" th:classappend="${activeType=='飯'} ? 'teal'" class="ui basic button">飯</a>
+        </div>
+        <div class="ui labeled button m-margin-tb-tiny">
+            <a href="#" th:href="@{/res/{id}(id=${re.id} , type='麵')}" th:classappend="${activeType=='麵'} ? 'teal'" class="ui basic button">麵</a>
+        </div>
+        <div class="ui labeled button m-margin-tb-tiny">
+            <a href="#" th:href="@{/res/{id}(id=${re.id} , type='飲料')}" th:classappend="${activeType=='飲料'} ? 'teal'" class="ui basic button">飲料</a>
+        </div>
+        <div class="ui labeled button m-margin-tb-tiny">
+            <a href="#" th:href="@{/res/{id}(id=${re.id} , type='其他')}" th:classappend="${activeType=='其他'} ? 'teal'" class="ui basic button">其他</a>
+        </div>
+    </div>
+
+    <h2 class="ui orange header">菜單</h2>
+    <table class="ui celled table">
+        <thead>
+        <tr>
+            <th>類型</th>
+            <th>名稱</th>
+            <th>價格</th>
+            <th>數量</th>
+            <th>加入</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="menu : ${menus}">
+            <td th:text="${menu.type}">飯</td>
+            <td th:text="${menu.name}">排骨飯</td>
+            <td th:text="${menu.price}">20</td>
+            <td>
+                <div class="ui fluid selection dropdown">
+                    <input type="hidden" name="" >
+                    <i class="dropdown icon"></i>
+                    <div class="default text">數量</div>
+                    <div class="menu">
+                        <div  class="item" data-value="0">0</div>
+                        <div  class="item" data-value="1">1</div>
+                        <div  class="item" data-value="2">2</div>
+                        <div  class="item" data-value="3">3</div>
+                        <div  class="item" data-value="4">4</div>
+                        <div  class="item" data-value="5">5</div>
+                        <div  class="item" data-value="6">6</div>
+                    </div>
+                </div>
+            </td>
+            <td><button onclick="add(this)" class="ui teal button">加入</button></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<script src=" https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>
+<script src="../static/lib/prism/prism.js" th:src="@{/lib/prism/prism.js}"></script>
+<script src="../static/lib/tocbot/tocbot.min.js" th:src="@{/lib/tocbot/tocbot.min.js}"></script>
+<script>
+    $('.ui.dropdown').dropdown()
+
+    function add(obj) {
+        var txt;
+        var tr = $(obj).parent().parent();
+        var type = tr.find('td').eq(0).text();
+        var name = tr.find('td').eq(1).text();
+        var price = tr.find('td').eq(2).text();
+        var number = tr.find('td').eq(3).children().find('input').val();
+        if (confirm("Press a button!")) {
+            txt = "成功!  ";
+        } else {
+            return;
+        }
+        // $("#demo").text(tr);
+        console.log(tr);
+        console.log(tr.val());
+        console.log(tr.text());
+        console.log(type);
+        console.log(name);
+        $("#demo").text(txt + "類型:  " + type + "   名稱:  " + name + " 價格: " + price + "  數量  " + number);
+    }
+
+</script>
+</body>
+</html>

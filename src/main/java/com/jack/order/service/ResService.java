@@ -17,7 +17,7 @@ public class ResService {
     @Autowired
     private ResRepository resRepository;
 
-    public List<Restaurant> getAllMenu(){
+    public List<Restaurant> getAll(){
         return resRepository.findAll();
     }
 

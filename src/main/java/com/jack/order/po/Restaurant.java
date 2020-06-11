@@ -10,8 +10,19 @@ public class Restaurant {
     private Long id;
     private String name;
     private String description;
-    @OneToMany(mappedBy = "restaurant",cascade = {CascadeType.REMOVE})
+    @OneToMany(mappedBy = "restaurant",cascade = {CascadeType.REMOVE,CascadeType.PERSIST,CascadeType.MERGE})
     private List<Menu> menus;
+
+    @Transient
+    private String menuStrings;
+
+    public String getMenuStrings() {
+        return menuStrings;
+    }
+
+    public void setMenuStrings(String menuStrings) {
+        this.menuStrings = menuStrings;
+    }
 
     public Long getId() {
         return id;

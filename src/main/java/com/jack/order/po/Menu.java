@@ -1,9 +1,7 @@
 package com.jack.order.po;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Menu {
@@ -14,6 +12,12 @@ public class Menu {
     private String name;
     private String type;
     private int price;
+
+    public Menu() {
+    }
+
+    @OneToMany(mappedBy = "menu")
+    private List<LineItem> lineItem;
 
     @ManyToOne
     private Restaurant restaurant;
@@ -36,6 +40,14 @@ public class Menu {
 
     public String getType() {
         return type;
+    }
+
+    public List<LineItem> getLineItem() {
+        return lineItem;
+    }
+
+    public void setLineItem(List<LineItem> lineItem) {
+        this.lineItem = lineItem;
     }
 
     public void setType(String type) {
