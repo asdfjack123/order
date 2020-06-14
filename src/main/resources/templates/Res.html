@@ -42,6 +42,10 @@
     </a>
 </nav>
 <div class="ui container">
+    <div class="ui success large message" th:if="${!#strings.isEmpty(loginMessage)}">
+        <h2>Hi,</h2>
+        <p th:text="${loginMessage}">歡迎登錄!</p>
+    </div>
     <br>
     <h2 class="ui orange header">餐廳列表</h2>
     <div class="ui success large message" th:if="${!#strings.isEmpty(message)}">

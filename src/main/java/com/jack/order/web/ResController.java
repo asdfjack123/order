@@ -66,7 +66,7 @@ public class ResController {
     @PostMapping("/res")
     //前端post時formdata若符合Book2成員 可自動匹配參數
     //RedirectAttributes 才能跨過redirect傳值
-    public String post(Restaurant re, final RedirectAttributes attributes) {
+    public String post(Restaurant re, RedirectAttributes attributes) {
 
         String s = re.getMenuStrings();
         System.out.println("------------");

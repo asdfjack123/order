@@ -18,8 +18,19 @@ public class LineItem {
     @ManyToOne
     private Cart cart;
 
+    @Transient
+    private Long menuId;
+
     public Long getId() {
         return id;
+    }
+
+    public Long getMenuId() {
+        return menuId;
+    }
+
+    public void setMenuId(Long menuId) {
+        this.menuId = menuId;
     }
 
     public void setId(Long id) {

@@ -14,8 +14,10 @@
 <nav th:replace="_fragments :: menu(0)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
     <div class="ui container">
         <div class="ui inverted secondary stackable menu">
-            <a href="#" th:href="@{/}" class="m-item item m-mobile-hide" th:classappend="${n==1} ? 'active'"><i class="mini home icon"></i>首頁</a>
-            <a href="#" th:href="@{/res}" class="m-item item m-mobile-hide" th:classappend="${n==2} ? 'active'"><i class="mini utensils icon"></i>餐廳</a>
+            <a href="#" th:href="@{/}" class="m-item item m-mobile-hide" th:classappend="${n==1} ? 'active'"><i
+                    class="mini home icon"></i>首頁</a>
+            <a href="#" th:href="@{/res}" class="m-item item m-mobile-hide" th:classappend="${n==2} ? 'active'"><i
+                    class="mini utensils icon"></i>餐廳</a>
             <div class="right m-item m-mobile-hide menu" th:if="${session.user} != null">
                 <div class="ui dropdown item">
                     <div class="text">
@@ -45,24 +47,35 @@
 
 <div class="ui container">
     <br>
-    <h2 id="demo"></h2>
+    <div class="reloadField">
+        <div th:fragment="reloadField">
+            <h2 class="reloadField" id="message" value="123" text="123"  th:text="${message}">d</h2>
+        </div>
+    </div>
     <br>
     <h2 class="ui orange header" th:text="${re.name}">XX餐廳</h2>
+    <h2 class="ui orange header">一二三四五</h2>
+    <h2 class="ui orange header">1234567890</h2>
     <div class="ui attached segment m-padded-tb-large">
         <div class="ui labeled button m-margin-tb-tiny">
-            <a href="#" th:href="@{/res/{id}(id=${re.id})}" th:classappend="${activeType==''} ? 'teal'" class="ui basic button">全部</a>
+            <a href="#" th:href="@{/res/{id}(id=${re.id})}" th:classappend="${activeType==''} ? 'teal'"
+               class="ui basic button">全部</a>
         </div>
         <div class="ui labeled button m-margin-tb-tiny">
-            <a href="#" th:href="@{/res/{id}(id=${re.id} , type='飯')}" th:classappend="${activeType=='飯'} ? 'teal'" class="ui basic button">飯</a>
+            <a href="#" th:href="@{/res/{id}(id=${re.id} , type='飯')}" th:classappend="${activeType=='飯'} ? 'teal'"
+               class="ui basic button">飯</a>
         </div>
         <div class="ui labeled button m-margin-tb-tiny">
-            <a href="#" th:href="@{/res/{id}(id=${re.id} , type='麵')}" th:classappend="${activeType=='麵'} ? 'teal'" class="ui basic button">麵</a>
+            <a href="#" th:href="@{/res/{id}(id=${re.id} , type='麵')}" th:classappend="${activeType=='麵'} ? 'teal'"
+               class="ui basic button">麵</a>
         </div>
         <div class="ui labeled button m-margin-tb-tiny">
-            <a href="#" th:href="@{/res/{id}(id=${re.id} , type='飲料')}" th:classappend="${activeType=='飲料'} ? 'teal'" class="ui basic button">飲料</a>
+            <a href="#" th:href="@{/res/{id}(id=${re.id} , type='飲料')}" th:classappend="${activeType=='飲料'} ? 'teal'"
+               class="ui basic button">飲料</a>
         </div>
         <div class="ui labeled button m-margin-tb-tiny">
-            <a href="#" th:href="@{/res/{id}(id=${re.id} , type='其他')}" th:classappend="${activeType=='其他'} ? 'teal'" class="ui basic button">其他</a>
+            <a href="#" th:href="@{/res/{id}(id=${re.id} , type='其他')}" th:classappend="${activeType=='其他'} ? 'teal'"
+               class="ui basic button">其他</a>
         </div>
     </div>
 
@@ -80,25 +93,30 @@
         <tbody>
         <tr th:each="menu : ${menus}">
             <td th:text="${menu.type}">飯</td>
-            <td th:text="${menu.name}">排骨飯</td>
+            <td >
+                <input type="hidden" name ="id" th:value="${menu.id}">
+                <span th:text="${menu.name}">排骨飯</span>
+            </td>
             <td th:text="${menu.price}">20</td>
             <td>
                 <div class="ui fluid selection dropdown">
-                    <input type="hidden" name="" >
+                    <input type="hidden" name="">
                     <i class="dropdown icon"></i>
                     <div class="default text">數量</div>
                     <div class="menu">
-                        <div  class="item" data-value="0">0</div>
-                        <div  class="item" data-value="1">1</div>
-                        <div  class="item" data-value="2">2</div>
-                        <div  class="item" data-value="3">3</div>
-                        <div  class="item" data-value="4">4</div>
-                        <div  class="item" data-value="5">5</div>
-                        <div  class="item" data-value="6">6</div>
+                        <div class="item" data-value="0">0</div>
+                        <div class="item" data-value="1">1</div>
+                        <div class="item" data-value="2">2</div>
+                        <div class="item" data-value="3">3</div>
+                        <div class="item" data-value="4">4</div>
+                        <div class="item" data-value="5">5</div>
+                        <div class="item" data-value="6">6</div>
                     </div>
                 </div>
             </td>
-            <td><button onclick="add(this)" class="ui teal button">加入</button></td>
+            <td>
+                <button onclick="add(this)" class="ui teal button">加入</button>
+            </td>
         </tr>
         </tbody>
     </table>
@@ -113,7 +131,32 @@
 <script>
     $('.ui.dropdown').dropdown()
 
+    function postData() {
+
+    }
+
     function add(obj) {
+        var txt;
+        var tr = $(obj).parent().parent();
+        var type = tr.find('td').eq(0).text();
+        var id = tr.find('td').eq(1).find('input').val();
+        var name = tr.find('td').eq(1).find('span').val();
+        var price = tr.find('td').eq(2).text();
+        var number = tr.find('td').eq(3).children().find('input').val();
+        if (confirm("確定將" + name + "加入購物車?")) {
+            txt = "成功! " + "類型:  " + type + "   名稱:  " + name + " 價格: " + price + "  數量  " + number;
+            $(".reloadField").load(/*[[@{/lineItem}]]*/"/lineItem", {
+                "menuId" : id,
+                "price": price,
+                "quantity": number
+            });
+        } else {
+            return;
+        }
+
+    }
+
+    function addtest(obj) {
         var txt;
         var tr = $(obj).parent().parent();
         var type = tr.find('td').eq(0).text();

@@ -21,4 +21,9 @@ public class IndexController {
         return "Res";
     }
 
+    @GetMapping("/test")
+    public String test(){
+        return "test";
+    }
+
 }

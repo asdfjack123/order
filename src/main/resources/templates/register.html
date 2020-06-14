@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>註冊</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <!-- 引用靜態資源時要加 th:href="@{/}" 斜線默認static資料夾，後面補上路徑   -->
+    <link rel="stylesheet" href="../static/css/me.css" th:href="@{/css/me.css}">
+</head>
+<body>
+
+
+<!--導航-->
+<!--inverted segment是黑色區塊-->
+<nav th:replace="_fragments :: menu(0)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <a href="#" th:href="@{/}" class="m-item item m-mobile-hide" th:classappend="${n==1} ? 'active'"><i
+                    class="mini home icon"></i>首頁</a>
+            <a href="#" th:href="@{/res}" class="m-item item m-mobile-hide" th:classappend="${n==2} ? 'active'"><i
+                    class="mini utensils icon"></i>餐廳</a>
+            <div class="right m-item m-mobile-hide menu" th:if="${session.user} != null">
+                <div class="ui dropdown item">
+                    <div class="text">
+                        <img class="ui avatar image" src="https://picsum.photos/100/100?image=1005"
+                             th:arc="${session.user}!= null ? @{${session.user.avatar}}">
+                        <span th:text="${session.user}!= null ? ${session.user.nickname}">Jack</span>
+                    </div>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <!--                        <a href="#" th:href="@{/admin/blogs}" class="item">管理</a>-->
+                        <!--                        <a href="#" th:href="@{/admin/logout}" class="item">登出</a>-->
+                    </div>
+                </div>
+            </div>
+
+            <th:block th:if="${session.user} == null">
+                <a href="#" th:href="@{/admin/}" class="right m-item item m-mobile-hide"><i
+                        class="mini home icon"></i>登入</a>
+            </th:block>
+        </div>
+    </div>
+    </div>
+    <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+        <i class="sidebar icon"></i>
+    </a>
+</nav>
+
+<!--中間內容-->
+<div class="m-container-small m-padded-tb-massive" style="max-width: 30em !important;">
+    <div class="ui container">
+        <div class="ui middle aligned center aligned grid">
+            <div class="column">
+                <h2 class="ui teal image header">
+                    <div class="content">
+                        管理登錄
+                    </div>
+                </h2>
+                <form class="ui large form" method="post" action="#" th:action="@{/admin/login}">
+                    <div class="ui segment">
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="user icon"></i>
+                                <input type="text" name="username" placeholder="帳號">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="user icon"></i>
+                                <input type="text" name="nickname" placeholder="暱稱">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="lock icon"></i>
+                                <input type="password" name="password" placeholder="密碼">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="lock icon"></i>
+                                <input type="password" name="confirmPassword" placeholder="確認密碼">
+                            </div>
+                        </div>
+                        <button class="ui fluid large teal submit button">註冊</button>
+                    </div>
+
+                    <div class="ui error mini message"></div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src=" https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>
+<script src="../static/lib/prism/prism.js" th:src="@{/lib/prism/prism.js}"></script>
+<script src="../static/lib/tocbot/tocbot.min.js" th:src="@{/lib/tocbot/tocbot.min.js}"></script>
+
+<script>
+    $('.ui.form').form({
+        fields: {
+            username: {
+                identifier: 'username',
+                rules: [{
+                    type: 'empty',
+                    prompt: '請輸入帳號'
+                }]
+            },
+            password: {
+                identifier: 'password',
+                rules: [{
+                    type: 'empty',
+                    prompt: '請輸入密碼'
+                }]
+            },
+            confirmPassword: {
+                identifier: 'confirmPassword',
+                rules: [{
+                    type: 'match[password]',
+                    prompt: '密碼不一致'
+                }]
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

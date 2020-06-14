@@ -1,6 +1,6 @@
 package com.jack.order.service;
 
-import com.jack.order.atool.Strs;
+import com.jack.order.autil.Strs;
 import com.jack.order.dao.MenuRepository;
 import com.jack.order.po.Menu;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +22,10 @@ public class MenuService {
 
     public List<Menu> findByResId(Long id) {
         return menuRepository.findByRestaurantId(id);
+    }
+
+    public Menu findById(Long id){
+        return menuRepository.findById(id).orElse(null);
     }
 
     public List<Menu> findByResIdAndType(Long id, String type) {
