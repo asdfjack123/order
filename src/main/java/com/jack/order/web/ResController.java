@@ -38,7 +38,7 @@ public class ResController {
     @GetMapping("/res/input/{id}")
     public String inputId(@PathVariable Long id, Model model) {
         model.addAttribute("re", resService.findById(id));
-        model.addAttribute("menus",menuService.findByResId(id));
+        model.addAttribute("menus", menuService.findByResId(id));
         return "input";
     }
 
@@ -46,18 +46,24 @@ public class ResController {
     @GetMapping("/res/{id}")
     public String resPage(@PathVariable Long id, Model model, @RequestParam(defaultValue = "") String type) {
         model.addAttribute("re", resService.findById(id));
-        model.addAttribute("menus",menuService.findByResIdAndType(id,type));
-        model.addAttribute("activeType",type);
+        model.addAttribute("menus", menuService.findByResIdAndType(id, type));
+        model.addAttribute("activeType", type);
         return "re";
     }
 
-
+    @GetMapping("/reloadres/{id}")
+    public String reloadResPage(@PathVariable Long id, Model model, @RequestParam(defaultValue = "") String type) {
+        model.addAttribute("re", resService.findById(id));
+        model.addAttribute("menus", menuService.findByResIdAndType(id, type));
+        model.addAttribute("activeType", type);
+        return "re :: reloadMenuField";
+    }
 
     //新方法
     @GetMapping("/res")
     //@PageableDefault 前端傳來的自動匹配成pageable，並設定好預設值
     //當page<0時會自動判定返回0
-    public String list2(@PageableDefault(page=0,size = 5,sort = {"id"},direction = Sort.Direction.DESC) Pageable pageable, Model model){
+    public String list2(@PageableDefault(page = 0, size = 5, sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable, Model model) {
         Page<Restaurant> page1 = resService.findAllByPage(pageable);
         model.addAttribute("page", page1);
         return "Res";
@@ -75,13 +81,13 @@ public class ResController {
         if (!"".equals(s) && s != null) {
             String[] menuStrings = s.split("/");
             List<Menu> menuList = new ArrayList<>();
-            for(String menuString : menuStrings){
-                if ("".equals(menuString) || menuString==null){
+            for (String menuString : menuStrings) {
+                if ("".equals(menuString) || menuString == null) {
                     break;
                 }
                 String[] tmp = menuString.split(",");
                 Menu menu = new Menu();
-                if(Long.valueOf(tmp[0]) != 0){
+                if (Long.valueOf(tmp[0]) != 0) {
                     menu.setId(Long.valueOf(tmp[0]));
                 }
                 menu.setType(tmp[1]);
